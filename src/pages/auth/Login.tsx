@@ -15,13 +15,21 @@ export default function Login() {
   const handleSubmit = async () => {
     try {
       const data = await authApi.signIn(user);
-      
-      if (data.token) {
+
+      if (data.token, data.user.status === "ACTIVE") {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
-        setTimeout(() => {
-          router.push('/');
-        }, 200);
+
+        if(data.user.type === "MANAGER"){
+          router.push('/gerente');
+        }
+        if(data.user.type === "ADMIN"){
+          router.push('/admin');
+        }
+        if(data.user.type === "EMPLOYEE"){
+          router.push('/funcionario');
+        }
+        
       }
     } catch (error) {
       console.error("Erro ao fazer login:", error);
@@ -32,7 +40,7 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
         <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
-        
+
         <div className="space-y-4">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
@@ -54,7 +62,7 @@ export default function Login() {
             </label>
             <input
               value={user.password}
-              onChange={(e) => setUser(prev => ({...prev, password: e.target.value}))}
+              onChange={(e) => setUser(prev => ({ ...prev, password: e.target.value }))}
               type="password"
               id="password"
               name="password"

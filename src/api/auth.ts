@@ -8,6 +8,7 @@ interface User {
   updatedAt: string;
   phone: string | null;
   status: 'ACTIVE' | 'INACTIVE';
+  type: "ADMIN" | "EMPLOYEE" | "MANAGER"
 }
 
 interface LoginResponse {
