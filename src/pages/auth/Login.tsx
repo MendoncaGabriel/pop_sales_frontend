@@ -1,4 +1,8 @@
+'use client';
+
 import { useState } from "react";
+import { useRouter } from "next/router";
+import { authApi } from "@/api/auth";
 
 export default function Login() {
   const [user, setUser] = useState({
@@ -6,10 +10,23 @@ export default function Login() {
     password: 'admin'
   });
 
-    const handleSubmit = () => {
-      axios.post('.post('URL_ADDRESS:3000/login', user)
-    };
-  }
+  const router = useRouter();
+
+  const handleSubmit = async () => {
+    try {
+      const data = await authApi.signIn(user);
+      
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        setTimeout(() => {
+          router.push('/');
+        }, 200);
+      }
+    } catch (error) {
+      console.error("Erro ao fazer login:", error);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -48,6 +65,7 @@ export default function Login() {
           <button
             type="button"
             className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            onClick={handleSubmit}
           >
             Entrar
           </button>
