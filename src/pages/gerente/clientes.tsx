@@ -1,7 +1,7 @@
 import { clientApi } from '@/api/client';
-import { FormCreateClient } from '@/components/gerente/FormCreateClient';
-import { FormUpdateClient } from '@/components/gerente/FormUpdateClient';
-import { TableClients } from '@/components/gerente/TableClients';
+import { FormCreateClient } from '@/components/client/FormCreateClient';
+import { FormUpdateClient } from '@/components/client/FormUpdateClient';
+import { TableClients } from '@/components/client/TableClients';
 import { useAuthStore } from '@/store/useAuthStore';
 import { Client, CreateClient } from '@/types/api';
 import { useEffect, useState } from 'react';

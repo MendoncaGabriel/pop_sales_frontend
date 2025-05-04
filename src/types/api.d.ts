@@ -2,7 +2,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  type: 'ADMIN' | 'MANAGER' | 'EMPLOYEE'; 
+  type: 'ADMIN' | 'MANAGER' | 'EMPLOYEE';
   createdAt: string;
   updatedAt: string;
   phone: string | null;
@@ -42,7 +42,7 @@ export interface CreateClientResponse {
   zipCode: string;
 }
 
-export  interface CreateClient {
+export interface CreateClient {
   name: string;
   companyId: string;
   email: string;
@@ -50,4 +50,71 @@ export  interface CreateClient {
   phoneNumber: string;
   responsiblePerson: string;
   zipCode: string;
+}
+
+export interface CreateEmployeeRequest {
+  name: string,
+  email: string,
+  password: string,
+  phone: string,
+  companyId: string
+  type: "MANAGER" | "EMPLOYEE" | "",
+  status: "ACTIVE" | "INACTIVE" | ""
+}
+
+export interface CreateEmployeeResponse {
+  user: {
+    id: string,
+    name: string,
+    email: string,
+    createdAt: Date,
+    updatedAt: Date,
+    phone: string,
+    status: "ACTIVE" | "INACTIVE"
+  }
+}
+
+export interface ListUsersByCompanyIdResponse {
+  users: {
+    id: string,
+    name: string,
+    email: string,
+    createdAt: Date,
+    updatedAt: Date,
+    status: "ACTIVE" | "INACTIVE",
+    phone: null,
+    type: "MANAGER" | "EMPLOYEE" | "ADMIN"
+  }[]
+}
+
+
+export interface Employee {
+  id: string,
+  name: string,
+  email: string,
+  createdAt: Date,
+  updatedAt: Date,
+  status: "ACTIVE" | "INACTIVE",
+  phone: null,
+  type: "MANAGER" | "EMPLOYEE" | "ADMIN"
+}
+
+export interface CreateUserRequest {
+  name: string,
+  email: string,
+  password: string,
+  phone: string,
+  companyId: string
+}
+
+export interface CreateUserResponse {
+  user: {
+    id: string,
+    name: string,
+    email: string,
+    createdAt: Date,
+    updatedAt: Date,
+    phone: string | null,
+    status: "ACTIVE" | "INACTIVE",
+  }
 }
