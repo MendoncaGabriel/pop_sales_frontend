@@ -28,8 +28,8 @@ export default function Clientes() {
     responsiblePerson: '',
     zipCode: '',
     id: '',
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: "",
+    updatedAt: "",
     lat: "",
     lon: ""
   });

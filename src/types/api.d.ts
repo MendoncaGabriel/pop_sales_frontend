@@ -21,8 +21,8 @@ export interface Client {
   name: string;
   id: string;
   email: string | null;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   companyId: string | null;
   zipCode: string | null;
   responsiblePerson: string | null;
@@ -67,8 +67,8 @@ export interface CreateEmployeeResponse {
     id: string,
     name: string,
     email: string,
-    createdAt: Date,
-    updatedAt: Date,
+    createdAt: string,
+    updatedAt: string,
     phone: string,
     status: "ACTIVE" | "INACTIVE"
   }
@@ -79,24 +79,12 @@ export interface ListUsersByCompanyIdResponse {
     id: string,
     name: string,
     email: string,
-    createdAt: Date,
-    updatedAt: Date,
+    createdAt: string,
+    updatedAt: string,
     status: "ACTIVE" | "INACTIVE",
     phone: null,
     type: "MANAGER" | "EMPLOYEE" | "ADMIN"
   }[]
-}
-
-
-export interface Employee {
-  id: string,
-  name: string,
-  email: string,
-  createdAt: Date,
-  updatedAt: Date,
-  status: "ACTIVE" | "INACTIVE",
-  phone: null,
-  type: "MANAGER" | "EMPLOYEE" | "ADMIN"
 }
 
 export interface CreateUserRequest {
@@ -105,16 +93,18 @@ export interface CreateUserRequest {
   password: string,
   phone: string,
   companyId: string
+  type: 'ADMIN' | 'MANAGER' | 'EMPLOYEE'
+  status: 'ACTIVE' | 'INACTIVE';
 }
 
 export interface CreateUserResponse {
-  user: {
-    id: string,
-    name: string,
-    email: string,
-    createdAt: Date,
-    updatedAt: Date,
-    phone: string | null,
-    status: "ACTIVE" | "INACTIVE",
-  }
+  user: User
+}
+
+export interface UpdateUserRequest {
+  name: string,
+	phone: string,
+	email: string,
+	status: "ACTIVE" | "INACTIVE"
+  type: 'ADMIN' | 'MANAGER' | 'EMPLOYEE'
 }

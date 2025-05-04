@@ -1,5 +1,5 @@
 import { api } from "@/lib/axios";
-import { Company, CreateUserRequest, CreateUserResponse, Employee, ListUsersByCompanyIdResponse, User } from "@/types/api";
+import { Company, CreateUserRequest, CreateUserResponse, ListUsersByCompanyIdResponse, UpdateUserRequest, User } from "@/types/api";
 
 interface AuthResponse {
   user: User;
@@ -7,7 +7,7 @@ interface AuthResponse {
 }
 
 export const userApi = {
-  async getMyUser(): Promise<AuthResponse> {
+  async getMyUser(){
     const { data } = await api.get<AuthResponse>(
       "/user",
     );
@@ -22,7 +22,23 @@ export const userApi = {
     return data;
   },
 
-  async listByCompanyId(companyId: string): Promise<Employee[]> {
+  async update(id: string, user: UpdateUserRequest){
+    const { data } = await api.patch<UpdateUserRequest>(
+      `/user/${id}`,
+      user
+    );
+    return data;
+  },
+
+  async delete(id: string){
+    console.log(id)
+    const { data } = await api.delete<UpdateUserRequest>(
+      `/user/${id}`
+    );
+    return data;
+  },
+
+  async listByCompanyId(companyId: string){
     const { data } = await api.get<ListUsersByCompanyIdResponse>(
       `/user/company/${companyId}`,
     );

@@ -1,16 +1,17 @@
-import { CreateUserRequest } from "@/types/api";
+import { UpdateUserRequest } from "@/types/api";
 import { Button } from "../button";
 
-interface FormCreateEmployeeProps {
-  formData: CreateUserRequest;
+interface FormUpdateEmployeeProps {
+  formData: UpdateUserRequest;
   handleSubmit: (e: React.FormEvent) => Promise<void>;
-  setFormData: React.Dispatch<React.SetStateAction<CreateUserRequest>>;
+  setFormData: React.Dispatch<React.SetStateAction<UpdateUserRequest>>;
+  setIsUpdate: (data: boolean) => void;
 }
 
-export function FormCreateEmployee({ formData, handleSubmit, setFormData }: FormCreateEmployeeProps) {
+export function FormUpdateEmployee({ formData, handleSubmit, setFormData, setIsUpdate }: FormUpdateEmployeeProps) {
   return (
     <>
-      <h1 className="text-2xl font-bold mb-6">Cadastrar Colaborador</h1>
+      <h1 className="text-2xl font-bold mb-6">Atualizar colaborador</h1>
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -47,21 +48,8 @@ export function FormCreateEmployee({ formData, handleSubmit, setFormData }: Form
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Senha</label>
-            <input
-              type="password"
-              placeholder="Mínimo 4 caracteres"
-              value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              className="w-full p-2 border rounded"
-              required
-              min={4}
-            />
-          </div>
-
-          <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Nivel</label>
-            <select 
+            <select
               value={formData.type}
               onChange={(e) => setFormData({ ...formData, type: e.target.value as "MANAGER" | "EMPLOYEE" })}
               className="w-full p-2 border rounded"
@@ -73,7 +61,7 @@ export function FormCreateEmployee({ formData, handleSubmit, setFormData }: Form
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-            <select 
+            <select
               value={formData.status}
               onChange={(e) => setFormData({ ...formData, status: e.target.value as "ACTIVE" | "INACTIVE" })}
               className="w-full p-2 border rounded"
@@ -84,9 +72,14 @@ export function FormCreateEmployee({ formData, handleSubmit, setFormData }: Form
           </div>
         </div>
 
-          <Button type="submit" className='mt-4' variant='blue'>Cadastrar Colaborador</Button>
-        
+        <div className="space-x-4">
+          <Button type="submit" className='mt-4' variant='blue'>Atualizar funcionário</Button>
+          <Button className='mt-4' variant='red' onClick={() => setIsUpdate(false)}>X</Button>
+        </div>
+
+
       </form>
     </>
+
   )
 }

@@ -1,10 +1,10 @@
-import { Employee } from "@/types/api";
+import { User } from "@/types/api";
 import { Button } from "../button";
 
 interface TableEmployeeProps {
-  employees: Employee[];
-  handleUpdateEmployee: (employee: Employee) => void;
-  handleDeleteEmployee: (employee: Employee) => void;
+  employees?: User[];
+  handleUpdateEmployee: (employee: User) => void;
+  handleDeleteEmployee: (employee: User) => void;
 }
 
 function handleEmployeeType(type: string){
@@ -50,7 +50,7 @@ export function TableEmployee(
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
-          {employees.map((employee, index) => (
+          {employees?.map((employee, index) => (
             <tr key={index}>
               <td className="px-6 py-4">{employee.name}</td>
               <td className="px-6 py-4">{employee.email}</td>
