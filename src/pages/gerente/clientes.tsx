@@ -1,4 +1,5 @@
 import { clientApi } from '@/api/client';
+import { Button } from '@/components/button';
 import { useAuthStore } from '@/store/useAuthStore';
 import { Client, CreateClient } from '@/types/api';
 import { useEffect, useState } from 'react';
@@ -80,12 +81,7 @@ function FormCreateClient({ formData, handleSubmit, setFormData }: FormCreateCli
         </div>
       </div>
 
-      <button
-        type="submit"
-        className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-      >
-        Cadastrar Cliente
-      </button>
+      <Button type="submit" className='mt-4' variant='green'>Cadastrar Cliente</Button>
     </form>
   )
 }

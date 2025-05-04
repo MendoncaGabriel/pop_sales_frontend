@@ -42,6 +42,7 @@ export default function App({ Component, pageProps }: AppProps) {
       // Apenas busca os dados do usuário se estiver autorizado
       (async () => {
         try {
+          if(localStorage.getItem("token") === null) return;
           const result = await userApi.getMyUser();
           setAuth(result.user, result.company);
         } catch (error) {
