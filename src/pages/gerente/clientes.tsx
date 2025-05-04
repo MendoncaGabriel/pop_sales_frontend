@@ -1,138 +1,15 @@
 import { clientApi } from '@/api/client';
-import { Button } from '@/components/button';
+import { FormCreateClient } from '@/components/gerente/FormCreateClient';
+import { FormUpdateClient } from '@/components/gerente/FormUpdateClient';
+import { TableClients } from '@/components/gerente/TableClients';
 import { useAuthStore } from '@/store/useAuthStore';
 import { Client, CreateClient } from '@/types/api';
 import { useEffect, useState } from 'react';
 
-interface FormCreateClientProps {
-  formData: CreateClient;
-  handleSubmit: (e: React.FormEvent) => Promise<void>;
-  setFormData: React.Dispatch<React.SetStateAction<CreateClient>>;
-}
-
-function FormCreateClient({ formData, handleSubmit, setFormData }: FormCreateClientProps) {
-  return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md mb-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Nome da Empresa</label>
-          <input
-            type="text"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="w-full p-2 border rounded"
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-          <input
-            type="email"
-            value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            className="w-full p-2 border rounded"
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Endereço</label>
-          <input
-            type="text"
-            value={formData.address}
-            onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-            className="w-full p-2 border rounded"
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Telefone</label>
-          <input
-            type="tel"
-            value={formData.phoneNumber}
-            onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
-            className="w-full p-2 border rounded"
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Responsável</label>
-          <input
-            type="text"
-            value={formData.responsiblePerson}
-            onChange={(e) => setFormData({ ...formData, responsiblePerson: e.target.value })}
-            className="w-full p-2 border rounded"
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">CEP</label>
-          <input
-            type="text"
-            value={formData.zipCode}
-            onChange={(e) => setFormData({ ...formData, zipCode: e.target.value })}
-            className="w-full p-2 border rounded"
-            required
-          />
-        </div>
-      </div>
-
-      <Button type="submit" className='mt-4' variant='green'>Cadastrar Cliente</Button>
-    </form>
-  )
-}
-
-function TableClients(
-  { clients }:
-    { clients: Client[]; }
-) {
-  return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full bg-white rounded-lg shadow">
-        <thead className="bg-gray-200">
-          <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Empresa</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Responsável</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Telefone</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ações</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-200">
-          {clients.map((client, index) => (
-            <tr key={index}>
-              <td className="px-6 py-4">{client.name}</td>
-              <td className="px-6 py-4">{client.email}</td>
-              <td className="px-6 py-4">{client.responsiblePerson}</td>
-              <td className="px-6 py-4">{client.phoneNumber}</td>
-              <td className="px-6 py-4">
-                <button
-                  className="text-blue-600 hover:text-blue-800 mr-3"
-                >
-                  Editar
-                </button>
-                <button
-                  className="text-red-600 hover:text-red-800"
-                >
-                  Remover
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
-}
-
 export default function Clientes() {
   const { company } = useAuthStore();
 
-  const [formData, setFormData] = useState<CreateClient>({
+  const [createClient, setCreateClient] = useState<CreateClient>({
     name: '',
     companyId: '',
     email: '',
@@ -142,11 +19,27 @@ export default function Clientes() {
     zipCode: ''
   });
 
+  const [updateClient, setUpdateClient] = useState<Client>({
+    name: '',
+    companyId: '',
+    email: '',
+    address: '',
+    phoneNumber: '',
+    responsiblePerson: '',
+    zipCode: '',
+    id: '',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    lat: "",
+    lon: ""
+  });
+
   const [clients, setClients] = useState<Client[]>([]);
+  const [isUpdate, setIsUpdate] = useState<boolean>(false);
 
   useEffect(() => {
     if (company) {
-      setFormData(prev => ({ ...prev, companyId: company.id }));
+      setCreateClient(prev => ({ ...prev, companyId: company.id }));
     }
   }, [company]);
 
@@ -164,14 +57,14 @@ export default function Clientes() {
       getClients();
     }
   }, [company?.id, getClients]);
-  
+
 
   const handleSubmitCreateClient = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await clientApi.create(formData);
-  
-      setFormData({
+      await clientApi.create(createClient);
+
+      setCreateClient({
         name: '',
         companyId: company?.id ?? "",
         email: '',
@@ -180,26 +73,83 @@ export default function Clientes() {
         responsiblePerson: '',
         zipCode: ''
       });
-  
+
       await getClients();
     } catch (error) {
       console.error('Erro ao criar cliente:', error);
     }
   };
-  
+
+  const handleSubmitUpdateClient = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await clientApi.update("", updateClient);
+
+
+      await getClients();
+    } catch (error) {
+      console.error('Erro ao atualizar cliente:', error);
+    }
+  };
+
+  const handleUpdateClient = async (client: unknown) => {
+    console.log(client)
+    setUpdateClient(client as Client);
+    setIsUpdate(true)
+  }
+
+  useEffect(() => {
+    if (!isUpdate) {
+      setCreateClient({
+        name: '',
+        companyId: company?.id?? "",
+        email: '',
+        address: '',
+        phoneNumber: '',
+        responsiblePerson: '',
+        zipCode: ''
+      })
+    } 
+  }, [company?.id, isUpdate])
+
+  const handleDeleteClient = async (client: Client) => {
+    const result = window.confirm('Tem certeza que deseja excluir este cliente?');
+    console.log(client)
+    if (result) {
+      try {
+        // await clientApi.delete(client.id);
+        // await getClients();
+        console.log(result)
+      } catch (error) {
+        console.error('Erro ao excluir cliente:', error);
+      }
+    }
+  };
+
 
   return (
     <div className="p-6 m-auto max-w-screen-xl">
-      <h1 className="text-2xl font-bold mb-6">Cadastro de Clientes</h1>
+      
+      {isUpdate ? (
+        <FormUpdateClient
+        formData={updateClient}
+        handleSubmit={handleSubmitUpdateClient}
+        setFormData={setUpdateClient}
+        setIsUpdate={setIsUpdate}
+        />
+      ) : (
+        <FormCreateClient
+          formData={createClient}
+          handleSubmit={handleSubmitCreateClient}
+          setFormData={setCreateClient}
+          />
+      )}
 
-      <FormCreateClient
-        formData={formData}
-        handleSubmit={handleSubmitCreateClient}
-        setFormData={setFormData}
+      <TableClients 
+        clients={clients} 
+        handleDeleteClient={handleDeleteClient}
+        handleUpdateClient={handleUpdateClient}
       />
-
-      <TableClients clients={clients} />
-
     </div>
   );
 }

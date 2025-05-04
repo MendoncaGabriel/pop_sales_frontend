@@ -1,15 +1,15 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
-type Variants = "primary" | "secondary" | "text" | "danger" | "green";
+type Variants = "blue" | "red" | "text" | "gray" | "green";
 type Sizes = "sm" | "md" | "lg" | "xl";
 
 const variants: Record<Variants, string> = {
-  primary: "bg-blue-500 text-white hover:bg-blue-600",
-  secondary: "bg-gray-200 text-gray-800 hover:bg-gray-300",
+  blue: "bg-blue-500 text-white hover:bg-blue-600",
+  gray: "bg-gray-200 text-gray-800 hover:bg-gray-300",
   green: "bg-green-500 text-white hover:bg-green-600",
   text: "bg-transparent text-blue-600 hover:underline",
-  danger: "bg-red-600 text-white hover:bg-red-700",
+  red: "bg-red-600 text-white hover:bg-red-700",
 };
 
 const sizes: Record<Sizes, string> = {
@@ -34,7 +34,7 @@ type ButtonProps<C extends React.ElementType> = PropsToComponent<C> & {
 
 export const Button = <C extends React.ElementType = "button">({
   as,
-  variant = "primary",
+  variant = "blue",
   size = "md",
   className,
   children,
