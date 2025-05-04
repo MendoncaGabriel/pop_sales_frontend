@@ -83,9 +83,10 @@ export default function Clientes() {
   const handleSubmitUpdateClient = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await clientApi.update("", updateClient);
+      const result = await clientApi.update(updateClient.id, updateClient);
+      console.log(result)
 
-
+      setIsUpdate(false)
       await getClients();
     } catch (error) {
       console.error('Erro ao atualizar cliente:', error);
@@ -93,7 +94,6 @@ export default function Clientes() {
   };
 
   const handleUpdateClient = async (client: unknown) => {
-    console.log(client)
     setUpdateClient(client as Client);
     setIsUpdate(true)
   }

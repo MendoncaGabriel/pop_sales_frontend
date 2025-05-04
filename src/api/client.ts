@@ -37,8 +37,8 @@ export const clientApi = {
     return data;
   },
 
-  async update(id: string, client: Client): Promise<Client> {
-    const { data } = await api.patch<Client>(
+  async update(id: string, client: Client): Promise<{clients: Client }> {
+    const { data } = await api.patch<{clients: Client }>(
       `/client/${id}`,
       client,
     );
