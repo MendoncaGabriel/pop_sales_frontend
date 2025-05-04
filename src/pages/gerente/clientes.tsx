@@ -112,14 +112,12 @@ export default function Clientes() {
     } 
   }, [company?.id, isUpdate])
 
-  const handleDeleteClient = async (client: Client) => {
+  const handleSubmitDeleteClient = async (client: Client) => {
     const result = window.confirm('Tem certeza que deseja excluir este cliente?');
-    console.log(client)
     if (result) {
       try {
-        // await clientApi.delete(client.id);
-        // await getClients();
-        console.log(result)
+        await clientApi.delete(client.id);
+        await getClients();
       } catch (error) {
         console.error('Erro ao excluir cliente:', error);
       }
@@ -147,7 +145,7 @@ export default function Clientes() {
 
       <TableClients 
         clients={clients} 
-        handleDeleteClient={handleDeleteClient}
+        handleDeleteClient={handleSubmitDeleteClient}
         handleUpdateClient={handleUpdateClient}
       />
     </div>
