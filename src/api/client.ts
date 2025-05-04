@@ -4,10 +4,10 @@ import { Client, CreateClient } from "@/types/api";
 
 
 interface CreateClientResponse {
-	client: {
-		id: string,
-		createdAt: Date,
-		updatedAt: Date,
+  client: {
+    id: string,
+    createdAt: Date,
+    updatedAt: Date,
     name: string,
     companyId: string,
     email: string,
@@ -15,9 +15,9 @@ interface CreateClientResponse {
     phoneNumber: string,
     responsiblePerson: string,
     zipCode: string,
-		lon: string,
-		lat: string,
-	}
+    lon: string,
+    lat: string,
+  }
 }
 
 
@@ -30,15 +30,15 @@ export const clientApi = {
     return data;
   },
 
-  async listByCompanyId(companyId: string): Promise<{clients: Client[] }> {
-    const { data } = await api.get<{clients: Client[] }>(
+  async listByCompanyId(companyId: string): Promise<{ clients: Client[] }> {
+    const { data } = await api.get<{ clients: Client[] }>(
       `/client/company/${companyId}`,
     );
     return data;
   },
 
-  async update(id: string, client: Client): Promise<{clients: Client }> {
-    const { data } = await api.patch<{clients: Client }>(
+  async update(id: string, client: Client): Promise<{ clients: Client }> {
+    const { data } = await api.patch<{ clients: Client }>(
       `/client/${id}`,
       client,
     );

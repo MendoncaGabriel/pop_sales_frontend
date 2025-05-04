@@ -102,14 +102,14 @@ export default function Clientes() {
     if (!isUpdate) {
       setCreateClient({
         name: '',
-        companyId: company?.id?? "",
+        companyId: company?.id ?? "",
         email: '',
         address: '',
         phoneNumber: '',
         responsiblePerson: '',
         zipCode: ''
       })
-    } 
+    }
   }, [company?.id, isUpdate])
 
   const handleSubmitDeleteClient = async (client: Client) => {
@@ -124,27 +124,26 @@ export default function Clientes() {
     }
   };
 
-
   return (
     <div className="p-6 m-auto max-w-screen-xl">
-      
+
       {isUpdate ? (
         <FormUpdateClient
-        formData={updateClient}
-        handleSubmit={handleSubmitUpdateClient}
-        setFormData={setUpdateClient}
-        setIsUpdate={setIsUpdate}
+          formData={updateClient}
+          handleSubmit={handleSubmitUpdateClient}
+          setFormData={setUpdateClient}
+          setIsUpdate={setIsUpdate}
         />
       ) : (
         <FormCreateClient
           formData={createClient}
           handleSubmit={handleSubmitCreateClient}
           setFormData={setCreateClient}
-          />
+        />
       )}
 
-      <TableClients 
-        clients={clients} 
+      <TableClients
+        clients={clients}
         handleDeleteClient={handleSubmitDeleteClient}
         handleUpdateClient={handleUpdateClient}
       />
